@@ -1,0 +1,41 @@
+# Secrets & credentials (never commit)
+.env
+.env.local
+belle-service-account.json
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.mypy_cache/
+
+# Virtual environments
+venv/
+venv_camera/
+.venv/
+
+# Belle runtime data & generated files
+data/belle.db
+data/*.db-journal
+data/*.db-wal
+# local AI models (wake word, embeddings, YOLO)
+models/
+# photos and audio from Telegram / vision
+uploads/
+# service logs from start.sh
+logs/
+# generated FAISS index (rebuild: python -m rag.build_index)
+rag/index/
+# patient medical reports — SENSITIVE, never commit (synced from Firestore)
+rag/corpus/informes/
+*.mp3
+
+# OS & editors
+.DS_Store
+.idea/
+.vscode/
+*.swp
+
+# Tooling
+.claude/

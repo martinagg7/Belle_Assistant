@@ -1,0 +1,15 @@
+# Belle camera venv (venv_camera). YOLO/OpenCV stack.
+# Install:  venv_camera/bin/pip install -r requirements-camera.txt
+# Used by camera/camera_server.py and camera/vigilancia.py.
+
+# Computer vision + detection
+opencv-python
+numpy
+ultralytics
+
+# Gemini (fall detection)
+google-genai
+
+# Server calls + .env
+requests
+python-dotenv

@@ -24,7 +24,7 @@
       justify-content: center;
     }
 
-    /* Etiqueta de pantalla — siempre abajo al centro */
+    /* Screen label */
     .screen-label {
       position: absolute;
       bottom: 28px;
@@ -36,13 +36,13 @@
       opacity: 0.18;
     }
 
-    /* Tipografía de info */
+    /* Info typography */
     .val-grande  { font-size: 96px;  font-weight: 100; line-height: 1; }
     .val-medio   { font-size: 52px;  font-weight: 200; line-height: 1.2; }
     .val-normal  { font-size: 34px;  font-weight: 300; opacity: 0.6; margin-top: 14px; }
     .val-pequeno { font-size: 24px;  font-weight: 300; opacity: 0.4; margin-top: 8px; }
 
-    /* Animaciones */
+    /* Animations */
     @keyframes parpadeo  { 0%,90%,100%{transform:scaleY(1)} 95%{transform:scaleY(0.05)} }
     @keyframes parpadeo2 { 0%,85%,100%{transform:scaleY(1)} 90%{transform:scaleY(0.05)} }
     @keyframes respirar  { 0%,100%{opacity:1} 50%{opacity:0.85} }
@@ -53,7 +53,7 @@
     @keyframes pulso-pastilla { 0%,100%{transform:scale(1); opacity:0.85} 50%{transform:scale(1.08); opacity:1} }
     .anim-pastilla { animation: pulso-pastilla 2s ease-in-out infinite; }
 
-    /* Botón stop radio */
+    /* Stop radio button */
     .btn-stop {
       position: absolute;
       bottom: 52px;
@@ -109,7 +109,7 @@
     .onda-5 { animation: onda5 1.15s ease-in-out infinite 0.16s; transform-origin: center bottom; }
 
 
-    /* Familia */
+    /* Family */
     #familia-foto {
       width: 200px; height: 200px;
       border-radius: 50%;
@@ -135,7 +135,7 @@
       line-height: 1.5;
     }
 
-    /* Telegram foto */
+    /* Telegram photo */
     #foto-telegram-img {
       max-width: 88vw; max-height: 74vh;
       border-radius: 10px;
@@ -144,13 +144,13 @@
       margin-bottom: 16px;
     }
 
-    /* Emergencia */
+    /* Emergency */
     #vista-emergencia { background: #080000; }
   </style>
 </head>
 <body>
 
-  <!-- ══ STANDBY ══════════════════════════════════════════════════════ -->
+  <!-- Standby -->
   <div id="vista-standby" class="vista" style="display:flex;">
     <svg width="720" height="420" viewBox="0 0 720 420">
       <g class="anim-cara">
@@ -169,7 +169,7 @@
     </svg>
   </div>
 
-  <!-- ══ THINKING ══════════════════════════════════════════════════════ -->
+  <!-- Thinking -->
   <div id="vista-thinking" class="vista">
     <svg width="720" height="420" viewBox="0 0 720 420">
       <circle cx="190" cy="180" r="90" fill="#4dd9ff" opacity="0.93"/>
@@ -188,14 +188,14 @@
     </svg>
   </div>
 
-  <!-- ══ HORA ══════════════════════════════════════════════════════════ -->
+  <!-- Time -->
   <div id="vista-time" class="vista">
     <div id="time-hora" class="val-grande"></div>
     <div id="time-fecha" class="val-normal"></div>
     <div class="screen-label">Hora</div>
   </div>
 
-  <!-- ══ TIEMPO ════════════════════════════════════════════════════════ -->
+  <!-- Weather -->
   <div id="vista-weather" class="vista">
     <div id="weather-icon" style="font-size:110px; line-height:1; margin-bottom:16px;"></div>
     <div id="weather-temp" class="val-grande"></div>
@@ -205,7 +205,7 @@
     <div class="screen-label">Tiempo</div>
   </div>
 
-  <!-- ══ MÚSICA / RADIO ════════════════════════════════════════════════ -->
+  <!-- Radio -->
   <div id="vista-radio" class="vista">
     <svg width="300" height="180" viewBox="0 0 300 180" style="margin-bottom:24px;">
       <rect class="onda-1" x="18"  y="36"  width="32" height="108" rx="7" fill="#4dd9ff" opacity="0.9"/>
@@ -224,7 +224,7 @@
     <div class="screen-label">Radio</div>
   </div>
 
-  <!-- ══ NOTICIAS ══════════════════════════════════════════════════════ -->
+  <!-- News -->
   <div id="vista-news" class="vista">
     <svg width="320" height="130" viewBox="0 0 320 130" style="margin-bottom:32px;">
       <rect class="linea-1" x="0" y="0"   width="320" height="14" rx="4" fill="#4dd9ff"/>
@@ -237,7 +237,7 @@
     <div class="screen-label">Noticias</div>
   </div>
 
-  <!-- ══ RECORDATORIO ══════════════════════════════════════════════════ -->
+  <!-- Reminder -->
   <div id="vista-recordatorio" class="vista">
     <svg width="72" height="80" viewBox="0 0 72 80" style="margin-bottom:28px; opacity:0.7;">
       <path d="M36 4 C20 4 12 16 12 30 L12 52 L4 64 L68 64 L60 52 L60 30 C60 16 52 4 36 4Z"
@@ -251,7 +251,7 @@
     <div class="screen-label">Recordatorio</div>
   </div>
 
-  <!-- ══ FAMILIA ═══════════════════════════════════════════════════════ -->
+  <!-- Family -->
   <div id="vista-familia" class="vista">
     <div id="familia-foto-placeholder">
       <svg width="80" height="80" viewBox="0 0 80 80" opacity="0.3">
@@ -267,7 +267,7 @@
     <div class="screen-label">Familia</div>
   </div>
 
-  <!-- ══ EMERGENCIA ════════════════════════════════════════════════════ -->
+  <!-- Emergency -->
   <div id="vista-emergencia" class="vista">
     <svg width="720" height="420" viewBox="0 0 720 420" class="anim-pulso">
       <g class="anim-cara">
@@ -290,7 +290,7 @@
     <div class="screen-label" style="color:#ff2222;">Emergencia</div>
   </div>
 
-  <!-- ══ TELEGRAM FOTO ═════════════════════════════════════════════════ -->
+  <!-- Telegram photo -->
   <div id="vista-foto-telegram" class="vista">
     <div id="foto-telegram-nombre" style="font-size:22px; opacity:0.4; letter-spacing:4px; text-transform:uppercase; margin-bottom:14px;"></div>
     <img id="foto-telegram-img" alt="foto"/>
@@ -298,7 +298,7 @@
     <div class="screen-label">Mensaje de Telegram</div>
   </div>
 
-  <!-- ══ RECORDATORIO FAMILIAR ═════════════════════════════════════════ -->
+  <!-- Family reminder -->
   <div id="vista-recordatorio-familiar" class="vista">
     <svg width="68" height="72" viewBox="0 0 68 72" style="margin-bottom:28px; opacity:0.65;">
       <rect x="2"  y="10" width="64" height="60" rx="7" fill="none" stroke="#4dd9ff" stroke-width="3.5"/>
@@ -311,7 +311,7 @@
     <div class="screen-label">Recordatorio de Familiar</div>
   </div>
 
-  <!-- ══ TELEGRAM MENSAJE ══════════════════════════════════════════════ -->
+  <!-- Telegram message -->
   <div id="vista-telegram-mensaje" class="vista">
     <svg width="90" height="90" viewBox="0 0 90 90" style="margin-bottom:24px; opacity:0.6;">
       <circle cx="45" cy="28" r="20" fill="none" stroke="#4dd9ff" stroke-width="3.5"/>
@@ -322,7 +322,7 @@
     <div class="screen-label">Telegram</div>
   </div>
 
-  <!-- ══ MEDICACIÓN ══════════════════════════════════════════════════ -->
+  <!-- Medication -->
   <div id="vista-medicacion" class="vista">
     <svg class="anim-pastilla" width="200" height="200" viewBox="0 0 200 200" style="margin-bottom:8px;">
       <rect x="22" y="68" width="156" height="64" rx="32" fill="none" stroke="#4dd9ff" stroke-width="6" opacity="0.9"/>
@@ -334,14 +334,14 @@
     <div class="screen-label">Medicación</div>
   </div>
 
-  <!-- ══ AUDIO CHAT ═══════════════════════════════════════════════════ -->
+  <!-- Audio chat -->
   <div id="vista-audio-chat" class="vista">
     <div id="audio-chat-nombre" style="font-size:22px; opacity:0.45; letter-spacing:5px; text-transform:uppercase; margin-bottom:40px;"></div>
     <canvas id="audio-wave-canvas" style="display:block; width:78vw; height:190px;"></canvas>
     <div class="screen-label" style="margin-top:32px;">Audio</div>
   </div>
 
-  <!-- ══ CHAT FAMILIAR ═══════════════════════════════════════════════ -->
+  <!-- Family chat -->
   <div id="vista-chat" class="vista">
     <svg width="110" height="100" viewBox="0 0 110 100" style="margin-bottom:28px; opacity:0.75;">
       <rect x="4" y="4" width="86" height="64" rx="18" fill="none" stroke="#4dd9ff" stroke-width="4"/>
@@ -355,7 +355,7 @@
     <div class="screen-label">Mensaje</div>
   </div>
 
-  <!-- ══ ESCUCHANDO ═══════════════════════════════════════════════════ -->
+  <!-- Listening -->
   <div id="vista-escuchando" class="vista">
     <svg width="720" height="420" viewBox="0 0 720 420">
       <g class="anim-cara">

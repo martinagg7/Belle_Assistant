@@ -78,9 +78,13 @@ The family web app is built on Firebase: Firestore keeps the elder profile, remi
   <img src="docs/images/arquitectura_cloud.png" alt="Cloud architecture" width="640"/>
 </div>
 
-### On the robot
+### Belle architecture
 
-Health questions are answered locally with a RAG pipeline: the medical PDFs are chunked, anonymized and indexed with FAISS using local embeddings, so personal data never leaves the device.
+On the robot, the main loop orchestrates the voice pipeline and routes every request through Groq to the right tool. Health questions are answered locally with a RAG pipeline: the medical PDFs are chunked, anonymized and indexed with FAISS using local embeddings, so personal data never leaves the device.
+
+<div align="center">
+  <img src="docs/images/arquitectura_pi.png" alt="Belle architecture" width="700"/>
+</div>
 
 ## Getting Started
 
@@ -127,10 +131,6 @@ Belle_Assistant/
 ├── data/              # SQLite schema
 └── prompts/           # LLM prompts
 ```
-
-<div align="center">
-  <img src="docs/images/arquitectura_pi.png" alt="System architecture" width="700"/>
-</div>
 
 ## Demo Videos
 

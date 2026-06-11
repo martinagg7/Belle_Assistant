@@ -78,6 +78,10 @@ The family web app is built on Firebase: Firestore keeps the elder profile, remi
   <img src="docs/images/arquitectura_cloud.png" alt="Cloud architecture" width="640"/>
 </div>
 
+<div align="center">
+  <img src="docs/images/web_familiar.gif" alt="Family web app" width="640"/>
+</div>
+
 ### Belle architecture
 
 On the robot, the main loop orchestrates the voice pipeline and routes every request through Groq to the right tool. Health questions are answered locally with a RAG pipeline: the medical PDFs are chunked, anonymized and indexed with FAISS using local embeddings, so personal data never leaves the device.

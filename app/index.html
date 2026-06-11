@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belle</title>
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html, body {
+      width: 100vw; height: 100vh;
+      overflow: hidden;
+      background: #000;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+      color: #4dd9ff;
+    }
+
+    .vista {
+      display: none;
+      position: relative;
+      width: 100vw; height: 100vh;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Etiqueta de pantalla — siempre abajo al centro */
+    .screen-label {
+      position: absolute;
+      bottom: 28px;
+      left: 0; right: 0;
+      text-align: center;
+      font-size: 13px;
+      letter-spacing: 7px;
+      text-transform: uppercase;
+      opacity: 0.18;
+    }
+
+    /* Tipografía de info */
+    .val-grande  { font-size: 96px;  font-weight: 100; line-height: 1; }
+    .val-medio   { font-size: 52px;  font-weight: 200; line-height: 1.2; }
+    .val-normal  { font-size: 34px;  font-weight: 300; opacity: 0.6; margin-top: 14px; }
+    .val-pequeno { font-size: 24px;  font-weight: 300; opacity: 0.4; margin-top: 8px; }
+
+    /* Animaciones */
+    @keyframes parpadeo  { 0%,90%,100%{transform:scaleY(1)} 95%{transform:scaleY(0.05)} }
+    @keyframes parpadeo2 { 0%,85%,100%{transform:scaleY(1)} 90%{transform:scaleY(0.05)} }
+    @keyframes respirar  { 0%,100%{opacity:1} 50%{opacity:0.85} }
+    @keyframes mirar     { 0%,40%,100%{transform:translateX(0)} 55%,90%{transform:translateX(14px)} }
+    @keyframes pulso-rojo{ 0%,100%{opacity:1} 50%{opacity:0.25} }
+    @keyframes pulso-boca     { 0%,100%{transform:scale(1)} 50%{transform:scale(1.18)} }
+    .anim-boca { animation: pulso-boca 1.2s ease-in-out infinite; transform-origin: center; }
+    @keyframes pulso-pastilla { 0%,100%{transform:scale(1); opacity:0.85} 50%{transform:scale(1.08); opacity:1} }
+    .anim-pastilla { animation: pulso-pastilla 2s ease-in-out infinite; }
+
+    /* Botón stop radio */
+    .btn-stop {
+      position: absolute;
+      bottom: 52px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 36px;
+      border: 2px solid #4dd9ff;
+      border-radius: 50px;
+      cursor: pointer;
+      user-select: none;
+      opacity: 0.75;
+      transition: background 0.2s, opacity 0.2s;
+    }
+    .btn-stop:hover  { background: #4dd9ff18; opacity: 1; }
+    .btn-stop:active { background: #4dd9ff30; }
+    .btn-stop span {
+      font-size: 18px;
+      font-weight: 300;
+      letter-spacing: 5px;
+      text-transform: uppercase;
+      color: #4dd9ff;
+    }
+    @keyframes punto1    { 0%,100%{opacity:0.12;transform:scale(0.55)} 33%{opacity:1;transform:scale(1)} }
+    @keyframes punto2    { 0%,100%{opacity:0.12;transform:scale(0.55)} 50%{opacity:1;transform:scale(1)} }
+    @keyframes punto3    { 0%,100%{opacity:0.12;transform:scale(0.55)} 66%{opacity:1;transform:scale(1)} }
+    @keyframes onda1     { 0%,100%{transform:scaleY(0.25)} 50%{transform:scaleY(1)} }
+    @keyframes onda2     { 0%,100%{transform:scaleY(0.25)} 50%{transform:scaleY(1)} }
+    @keyframes onda3     { 0%,100%{transform:scaleY(0.25)} 50%{transform:scaleY(1)} }
+    @keyframes onda4     { 0%,100%{transform:scaleY(0.25)} 50%{transform:scaleY(1)} }
+    @keyframes onda5     { 0%,100%{transform:scaleY(0.25)} 50%{transform:scaleY(1)} }
+    @keyframes barrido   { 0%,100%{transform:scaleX(0.08);opacity:0.1} 50%{transform:scaleX(1);opacity:0.65} }
+    .linea-1 { animation: barrido 2.2s ease-in-out infinite 0s;    transform-origin: left; }
+    .linea-2 { animation: barrido 2.2s ease-in-out infinite 0.3s;  transform-origin: left; }
+    .linea-3 { animation: barrido 2.2s ease-in-out infinite 0.6s;  transform-origin: left; }
+    .linea-4 { animation: barrido 2.2s ease-in-out infinite 0.9s;  transform-origin: left; }
+    .linea-5 { animation: barrido 2.2s ease-in-out infinite 1.2s;  transform-origin: left; }
+
+    .anim-cara  { animation: respirar 4s ease-in-out infinite; }
+    .anim-ojo-i { animation: parpadeo  4.3s ease-in-out infinite; transform-origin: center; }
+    .anim-ojo-d { animation: parpadeo2 4.9s ease-in-out infinite; transform-origin: center; }
+    .anim-mirar { animation: mirar 3.5s ease-in-out infinite; }
+    .anim-pulso { animation: pulso-rojo 1s ease-in-out infinite; }
+    .anim-pt1   { animation: punto1 1.3s ease-in-out infinite; transform-origin: center; }
+    .anim-pt2   { animation: punto2 1.3s ease-in-out infinite; transform-origin: center; }
+    .anim-pt3   { animation: punto3 1.3s ease-in-out infinite; transform-origin: center; }
+    .onda-1 { animation: onda1 0.8s  ease-in-out infinite;       transform-origin: center bottom; }
+    .onda-2 { animation: onda2 1.05s ease-in-out infinite 0.12s; transform-origin: center bottom; }
+    .onda-3 { animation: onda3 0.72s ease-in-out infinite 0.22s; transform-origin: center bottom; }
+    .onda-4 { animation: onda4 0.93s ease-in-out infinite 0.06s; transform-origin: center bottom; }
+    .onda-5 { animation: onda5 1.15s ease-in-out infinite 0.16s; transform-origin: center bottom; }
+
+
+    /* Familia */
+    #familia-foto {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #4dd9ff33;
+      margin-bottom: 24px;
+    }
+    #familia-foto-placeholder {
+      width: 200px; height: 200px;
+      border-radius: 50%;
+      background: #0a1420;
+      border: 2px solid #4dd9ff22;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+    }
+    #familia-descripcion {
+      font-size: 26px;
+      font-weight: 300;
+      opacity: 0.45;
+      text-align: center;
+      max-width: 72vw;
+      margin-top: 10px;
+      line-height: 1.5;
+    }
+
+    /* Telegram foto */
+    #foto-telegram-img {
+      max-width: 88vw; max-height: 74vh;
+      border-radius: 10px;
+      object-fit: contain;
+      border: 1px solid #4dd9ff18;
+      margin-bottom: 16px;
+    }
+
+    /* Emergencia */
+    #vista-emergencia { background: #080000; }
+  </style>
+</head>
+<body>
+
+  <!-- ══ STANDBY ══════════════════════════════════════════════════════ -->
+  <div id="vista-standby" class="vista" style="display:flex;">
+    <svg width="720" height="420" viewBox="0 0 720 420">
+      <g class="anim-cara">
+        <g class="anim-ojo-i">
+          <circle cx="190" cy="180" r="90" fill="#4dd9ff" opacity="0.93"/>
+          <circle cx="190" cy="180" r="54" fill="#000"/>
+          <circle cx="212" cy="152" r="22" fill="#4dd9ff" opacity="0.5"/>
+        </g>
+        <g class="anim-ojo-d">
+          <circle cx="530" cy="180" r="90" fill="#4dd9ff" opacity="0.93"/>
+          <circle cx="530" cy="180" r="54" fill="#000"/>
+          <circle cx="552" cy="152" r="22" fill="#4dd9ff" opacity="0.5"/>
+        </g>
+        <path d="M240 340 Q360 400 480 340" fill="none" stroke="#4dd9ff" stroke-width="14" stroke-linecap="round"/>
+      </g>
+    </svg>
+  </div>
+
+  <!-- ══ THINKING ══════════════════════════════════════════════════════ -->
+  <div id="vista-thinking" class="vista">
+    <svg width="720" height="420" viewBox="0 0 720 420">
+      <circle cx="190" cy="180" r="90" fill="#4dd9ff" opacity="0.93"/>
+      <circle cx="530" cy="180" r="90" fill="#4dd9ff" opacity="0.93"/>
+      <g class="anim-mirar">
+        <circle cx="190" cy="180" r="54" fill="#000"/>
+        <circle cx="212" cy="152" r="22" fill="#4dd9ff" opacity="0.5"/>
+        <circle cx="530" cy="180" r="54" fill="#000"/>
+        <circle cx="552" cy="152" r="22" fill="#4dd9ff" opacity="0.5"/>
+      </g>
+      <path d="M130 80 Q190 58 250 80" fill="none" stroke="#4dd9ff" stroke-width="10" stroke-linecap="round" opacity="0.6"/>
+      <path d="M470 80 Q530 58 590 80" fill="none" stroke="#4dd9ff" stroke-width="10" stroke-linecap="round" opacity="0.6"/>
+      <g class="anim-pt1"><circle cx="290" cy="360" r="18" fill="#4dd9ff"/></g>
+      <g class="anim-pt2"><circle cx="360" cy="360" r="18" fill="#4dd9ff"/></g>
+      <g class="anim-pt3"><circle cx="430" cy="360" r="18" fill="#4dd9ff"/></g>
+    </svg>
+  </div>
+
+  <!-- ══ HORA ══════════════════════════════════════════════════════════ -->
+  <div id="vista-time" class="vista">
+    <div id="time-hora" class="val-grande"></div>
+    <div id="time-fecha" class="val-normal"></div>
+    <div class="screen-label">Hora</div>
+  </div>
+
+  <!-- ══ TIEMPO ════════════════════════════════════════════════════════ -->
+  <div id="vista-weather" class="vista">
+    <div id="weather-icon" style="font-size:110px; line-height:1; margin-bottom:16px;"></div>
+    <div id="weather-temp" class="val-grande"></div>
+    <div id="weather-ciudad" class="val-normal"></div>
+    <div id="weather-condicion" class="val-pequeno"></div>
+    <div id="weather-maxmin" class="val-pequeno"></div>
+    <div class="screen-label">Tiempo</div>
+  </div>
+
+  <!-- ══ MÚSICA / RADIO ════════════════════════════════════════════════ -->
+  <div id="vista-radio" class="vista">
+    <svg width="300" height="180" viewBox="0 0 300 180" style="margin-bottom:24px;">
+      <rect class="onda-1" x="18"  y="36"  width="32" height="108" rx="7" fill="#4dd9ff" opacity="0.9"/>
+      <rect class="onda-2" x="66"  y="18"  width="32" height="144" rx="7" fill="#4dd9ff" opacity="0.9"/>
+      <rect class="onda-3" x="114" y="9"   width="32" height="162" rx="7" fill="#4dd9ff" opacity="0.9"/>
+      <rect class="onda-4" x="162" y="27"  width="32" height="126" rx="7" fill="#4dd9ff" opacity="0.9"/>
+      <rect class="onda-5" x="210" y="45"  width="32" height="90"  rx="7" fill="#4dd9ff" opacity="0.9"/>
+    </svg>
+    <div id="radio-tipo" class="val-normal" style="margin-top:0;"></div>
+    <div id="btn-stop-radio" class="btn-stop">
+      <svg width="18" height="18" viewBox="0 0 18 18">
+        <rect x="2" y="2" width="14" height="14" rx="2" fill="#4dd9ff"/>
+      </svg>
+      <span>Stop</span>
+    </div>
+    <div class="screen-label">Radio</div>
+  </div>
+
+  <!-- ══ NOTICIAS ══════════════════════════════════════════════════════ -->
+  <div id="vista-news" class="vista">
+    <svg width="320" height="130" viewBox="0 0 320 130" style="margin-bottom:32px;">
+      <rect class="linea-1" x="0" y="0"   width="320" height="14" rx="4" fill="#4dd9ff"/>
+      <rect class="linea-2" x="0" y="26"  width="260" height="10" rx="3" fill="#4dd9ff"/>
+      <rect class="linea-3" x="0" y="48"  width="300" height="10" rx="3" fill="#4dd9ff"/>
+      <rect class="linea-4" x="0" y="70"  width="220" height="10" rx="3" fill="#4dd9ff"/>
+      <rect class="linea-5" x="0" y="92"  width="280" height="10" rx="3" fill="#4dd9ff"/>
+    </svg>
+    <div id="news-categoria" class="val-medio" style="letter-spacing:6px; text-transform:uppercase;"></div>
+    <div class="screen-label">Noticias</div>
+  </div>
+
+  <!-- ══ RECORDATORIO ══════════════════════════════════════════════════ -->
+  <div id="vista-recordatorio" class="vista">
+    <svg width="72" height="80" viewBox="0 0 72 80" style="margin-bottom:28px; opacity:0.7;">
+      <path d="M36 4 C20 4 12 16 12 30 L12 52 L4 64 L68 64 L60 52 L60 30 C60 16 52 4 36 4Z"
+            fill="none" stroke="#4dd9ff" stroke-width="3.5" stroke-linejoin="round"/>
+      <path d="M28 64 Q28 74 36 74 Q44 74 44 64"
+            fill="none" stroke="#4dd9ff" stroke-width="3.5"/>
+      <circle cx="36" cy="2" r="4" fill="#4dd9ff"/>
+    </svg>
+    <div id="recordatorio-texto" class="val-medio" style="text-align:center; max-width:78vw; font-weight:300;"></div>
+    <div id="recordatorio-hora" class="val-normal"></div>
+    <div class="screen-label">Recordatorio</div>
+  </div>
+
+  <!-- ══ FAMILIA ═══════════════════════════════════════════════════════ -->
+  <div id="vista-familia" class="vista">
+    <div id="familia-foto-placeholder">
+      <svg width="80" height="80" viewBox="0 0 80 80" opacity="0.3">
+        <circle cx="40" cy="28" r="18" fill="none" stroke="#4dd9ff" stroke-width="3"/>
+        <path d="M8 76 Q8 52 40 52 Q72 52 72 76" fill="none" stroke="#4dd9ff" stroke-width="3"/>
+      </svg>
+    </div>
+    <img id="familia-foto" style="display:none;" alt="foto familiar"/>
+    <div id="familia-nombre" class="val-medio"></div>
+    <div id="familia-relacion" class="val-normal"></div>
+    <div id="familia-descripcion"></div>
+    <div id="familia-telefono" style="display:none; font-size:22px; opacity:0.35; margin-top:10px;"></div>
+    <div class="screen-label">Familia</div>
+  </div>
+
+  <!-- ══ EMERGENCIA ════════════════════════════════════════════════════ -->
+  <div id="vista-emergencia" class="vista">
+    <svg width="720" height="420" viewBox="0 0 720 420" class="anim-pulso">
+      <g class="anim-cara">
+        <g class="anim-ojo-i">
+          <circle cx="190" cy="180" r="90" fill="#ff2222" opacity="0.93"/>
+          <circle cx="190" cy="180" r="54" fill="#080000"/>
+          <circle cx="212" cy="152" r="22" fill="#ff2222" opacity="0.5"/>
+        </g>
+        <g class="anim-ojo-d">
+          <circle cx="530" cy="180" r="90" fill="#ff2222" opacity="0.93"/>
+          <circle cx="530" cy="180" r="54" fill="#080000"/>
+          <circle cx="552" cy="152" r="22" fill="#ff2222" opacity="0.5"/>
+        </g>
+        <path d="M240 350 Q360 290 480 350" fill="none" stroke="#ff2222" stroke-width="14" stroke-linecap="round"/>
+      </g>
+    </svg>
+    <div style="font-size:26px; color:#ff2222; opacity:0.7; letter-spacing:4px;">
+      Avisando a tu familia
+    </div>
+    <div class="screen-label" style="color:#ff2222;">Emergencia</div>
+  </div>
+
+  <!-- ══ TELEGRAM FOTO ═════════════════════════════════════════════════ -->
+  <div id="vista-foto-telegram" class="vista">
+    <div id="foto-telegram-nombre" style="font-size:22px; opacity:0.4; letter-spacing:4px; text-transform:uppercase; margin-bottom:14px;"></div>
+    <img id="foto-telegram-img" alt="foto"/>
+    <div id="foto-telegram-caption" class="val-pequeno" style="margin-top:14px;"></div>
+    <div class="screen-label">Mensaje de Telegram</div>
+  </div>
+
+  <!-- ══ RECORDATORIO FAMILIAR ═════════════════════════════════════════ -->
+  <div id="vista-recordatorio-familiar" class="vista">
+    <svg width="68" height="72" viewBox="0 0 68 72" style="margin-bottom:28px; opacity:0.65;">
+      <rect x="2"  y="10" width="64" height="60" rx="7" fill="none" stroke="#4dd9ff" stroke-width="3.5"/>
+      <line x1="2"  y1="26" x2="66" y2="26" stroke="#4dd9ff" stroke-width="3" opacity="0.5"/>
+      <line x1="20" y1="2"  x2="20" y2="18" stroke="#4dd9ff" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="48" y1="2"  x2="48" y2="18" stroke="#4dd9ff" stroke-width="3.5" stroke-linecap="round"/>
+    </svg>
+    <div id="recordatorio-familiar-creado" class="val-pequeno" style="margin-top:0; margin-bottom:12px;"></div>
+    <div id="recordatorio-familiar-texto" class="val-medio" style="text-align:center; max-width:78vw; font-weight:300;"></div>
+    <div class="screen-label">Recordatorio de Familiar</div>
+  </div>
+
+  <!-- ══ TELEGRAM MENSAJE ══════════════════════════════════════════════ -->
+  <div id="vista-telegram-mensaje" class="vista">
+    <svg width="90" height="90" viewBox="0 0 90 90" style="margin-bottom:24px; opacity:0.6;">
+      <circle cx="45" cy="28" r="20" fill="none" stroke="#4dd9ff" stroke-width="3.5"/>
+      <path d="M10 82 Q10 58 45 58 Q80 58 80 82" fill="none" stroke="#4dd9ff" stroke-width="3.5"/>
+    </svg>
+    <div id="telegram-mensaje-nombre" class="val-medio"></div>
+    <div class="val-normal" style="margin-top:10px;">te ha enviado un mensaje</div>
+    <div class="screen-label">Telegram</div>
+  </div>
+
+  <!-- ══ MEDICACIÓN ══════════════════════════════════════════════════ -->
+  <div id="vista-medicacion" class="vista">
+    <svg class="anim-pastilla" width="200" height="200" viewBox="0 0 200 200" style="margin-bottom:8px;">
+      <rect x="22" y="68" width="156" height="64" rx="32" fill="none" stroke="#4dd9ff" stroke-width="6" opacity="0.9"/>
+      <line x1="100" y1="68" x2="100" y2="132" stroke="#4dd9ff" stroke-width="4" opacity="0.5"/>
+      <path d="M22 100 A32 32 0 0 1 54 68 L100 68 L100 132 L54 132 A32 32 0 0 1 22 100 Z" fill="#4dd9ff" opacity="0.18"/>
+    </svg>
+    <div id="medicacion-nombre" class="val-medio" style="text-align:center; max-width:78vw;"></div>
+    <div id="medicacion-dosis"  class="val-normal"></div>
+    <div class="screen-label">Medicación</div>
+  </div>
+
+  <!-- ══ AUDIO CHAT ═══════════════════════════════════════════════════ -->
+  <div id="vista-audio-chat" class="vista">
+    <div id="audio-chat-nombre" style="font-size:22px; opacity:0.45; letter-spacing:5px; text-transform:uppercase; margin-bottom:40px;"></div>
+    <canvas id="audio-wave-canvas" style="display:block; width:78vw; height:190px;"></canvas>
+    <div class="screen-label" style="margin-top:32px;">Audio</div>
+  </div>
+
+  <!-- ══ CHAT FAMILIAR ═══════════════════════════════════════════════ -->
+  <div id="vista-chat" class="vista">
+    <svg width="110" height="100" viewBox="0 0 110 100" style="margin-bottom:28px; opacity:0.75;">
+      <rect x="4" y="4" width="86" height="64" rx="18" fill="none" stroke="#4dd9ff" stroke-width="4"/>
+      <path d="M18 68 L10 88 L38 76" fill="none" stroke="#4dd9ff" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+      <circle cx="28" cy="36" r="6" fill="#4dd9ff" opacity="0.7"/>
+      <circle cx="47" cy="36" r="6" fill="#4dd9ff" opacity="0.7"/>
+      <circle cx="66" cy="36" r="6" fill="#4dd9ff" opacity="0.7"/>
+    </svg>
+    <div id="chat-nombre" class="val-medio"></div>
+    <div class="val-normal" style="margin-top:10px;">te ha enviado un mensaje</div>
+    <div class="screen-label">Mensaje</div>
+  </div>
+
+  <!-- ══ ESCUCHANDO ═══════════════════════════════════════════════════ -->
+  <div id="vista-escuchando" class="vista">
+    <svg width="720" height="420" viewBox="0 0 720 420">
+      <g class="anim-cara">
+        <circle cx="190" cy="180" r="90" fill="#4dd9ff" opacity="0.93"/>
+        <circle cx="190" cy="180" r="54" fill="#000"/>
+        <circle cx="212" cy="152" r="22" fill="#4dd9ff" opacity="0.5"/>
+        <circle cx="530" cy="180" r="90" fill="#4dd9ff" opacity="0.93"/>
+        <circle cx="530" cy="180" r="54" fill="#000"/>
+        <circle cx="552" cy="152" r="22" fill="#4dd9ff" opacity="0.5"/>
+        <path d="M118 68 Q190 44 262 68" fill="none" stroke="#4dd9ff" stroke-width="10" stroke-linecap="round" opacity="0.7"/>
+        <path d="M458 68 Q530 44 602 68" fill="none" stroke="#4dd9ff" stroke-width="10" stroke-linecap="round" opacity="0.7"/>
+        <g class="anim-boca">
+          <ellipse cx="360" cy="358" rx="28" ry="20" fill="none" stroke="#4dd9ff" stroke-width="8"/>
+        </g>
+      </g>
+    </svg>
+    <div class="screen-label">Escuchando</div>
+  </div>
+
+  <script src="/app/ws.js"></script>
+</body>
+</html>

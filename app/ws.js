@@ -1,4 +1,4 @@
-// ws.js — cliente WebSocket Belle → pantalla
+// WebSocket client for the robot screen
 
 const WS_URL  = `ws://${window.location.host}/ws`;
 const API_URL = `http://${window.location.host}`;
@@ -16,12 +16,12 @@ let timerChat                = null;
 let emergenciaActiva         = false;
 let _audioWaveRAF            = null;
 
-// ── Onda sinusoidal animada ───────────────────────────────────────────
+// Animated sine wave
 function iniciarOndaAudio() {
     const canvas = document.getElementById('audio-wave-canvas');
     if (!canvas) return;
 
-    // Dimensiones reales del canvas = tamaño CSS × devicePixelRatio
+    // Real canvas size is CSS size times devicePixelRatio
     const dpr = window.devicePixelRatio || 1;
     canvas.width  = canvas.offsetWidth  * dpr;
     canvas.height = canvas.offsetHeight * dpr;
@@ -32,7 +32,7 @@ function iniciarOndaAudio() {
     const H  = canvas.offsetHeight;
     const cy = H / 2;
 
-    // Capas: { amp, freq, speed, phase, color, alpha, lineW, blur }
+    // Wave layers
     const capas = [
         { amp:55, freq:0.016, speed:1.2, phase:0.0, color:'#00cfff', alpha:0.85, lineW:2.2, blur:18 },
         { amp:38, freq:0.024, speed:1.8, phase:1.3, color:'#4de8ff', alpha:0.55, lineW:1.4, blur:12 },
@@ -79,7 +79,7 @@ function detenerOndaAudio() {
     if (canvas) canvas.getContext('2d').clearRect(0, 0, canvas.width, canvas.height);
 }
 
-// ── Emoji tiempo ─────────────────────────────────────────────────────
+// Weather emoji
 function getWeatherEmoji(condicion) {
     const c = (condicion || "").toLowerCase();
     if (c.includes("tormenta") || c.includes("thunder") || c.includes("storm"))          return "⛈️";
@@ -92,7 +92,7 @@ function getWeatherEmoji(condicion) {
     return "🌤️";
 }
 
-// ── Helpers ───────────────────────────────────────────────────────────
+// Helpers
 function capitalizar(t) {
     if (!t) return "";
     return t.charAt(0).toUpperCase() + t.slice(1);
@@ -110,7 +110,7 @@ function ocultarTodo() {
     });
 }
 
-// ── Pantallas ─────────────────────────────────────────────────────────
+// Screens
 function mostrarStandby() {
     if (emergenciaActiva) return;
     ocultarTodo();
@@ -235,7 +235,7 @@ function mostrarAudioChat(data) {
     ocultarTodo();
     document.getElementById("audio-chat-nombre").textContent = capitalizar(data.nombre || "Familiar");
     document.getElementById("vista-audio-chat").style.display = "flex";
-    // Espera un frame para que el canvas tenga dimensiones reales antes de dibujar
+    // Wait one frame so the canvas has real dimensions
     requestAnimationFrame(iniciarOndaAudio);
 }
 
@@ -255,7 +255,7 @@ function mostrarTelegramMensaje(data) {
     timerTelegramMensaje = setTimeout(mostrarStandby, FOTO_TIMEOUT);
 }
 
-// ── Router de eventos ─────────────────────────────────────────────────
+// Event router
 function manejarEvento(msg) {
     switch (msg.event) {
         case "show_thinking":              mostrarThinking();                          break;
@@ -278,7 +278,7 @@ function manejarEvento(msg) {
     }
 }
 
-// ── WebSocket ─────────────────────────────────────────────────────────
+// WebSocket
 function conectar() {
     ws = new WebSocket(WS_URL);
 
@@ -305,13 +305,13 @@ function conectar() {
     ws.onerror = (err) => console.error("[WS] error:", err);
 }
 
-// ── Botón stop radio ──────────────────────────────────────────────────
+// Stop radio button
 document.getElementById('btn-stop-radio').addEventListener('click', (e) => {
     e.stopPropagation();
     fetch(`${API_URL}/audio/stop`, { method: 'POST' }).catch(() => {});
 });
 
-// ── Tap para activar sin wake word ───────────────────────────────────
+// Tap to activate without wake word
 const TAP_EVT = ('ontouchstart' in window) ? 'touchstart' : 'click';
 document.body.addEventListener(TAP_EVT, () => {
     const standby = document.getElementById('vista-standby');

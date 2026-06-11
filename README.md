@@ -52,13 +52,11 @@ Belle runs on a Raspberry Pi 5 mounted on a Yahboom Raspbot V2 chassis. The expa
 
 | Component | Purpose | Where to buy |
 |---|---|---|
-| Raspberry Pi 5 (8 GB) | Main computer | — |
-| Yahboom Raspbot V2 | Chassis, expansion board, LED ring and servos | — |
-| DSI touchscreen | Belle's face and kiosk UI | — |
-| 2MP PTZ camera | Vision and fall detection | — |
-| USB-C speaker | Belle's voice | — |
-| USB microphone | Voice capture | — |
-| USB-C to USB adapter | Speaker connection | — |
+| Raspberry Pi 5 (8 GB) | Main computer | [raspberrypi.com](https://www.raspberrypi.com) |
+| DSI touchscreen | Belle's face and kiosk UI | [Banggood](https://www.banggood.com/es/4_3-or-5-or-7-Inch-Raspberry-Pi-5-DSI-Touch-Screen-IPS-Display-800+480-LCD-MIPI-CSI-Cable-Standard-Monitor-Capacitive-Touch-for-RPI-5-Pi5-p-2012528.html) |
+| 2MP PTZ camera | Vision and fall detection | [Alibaba](https://www.alibaba.com/pla/Yahboom-1MP-2MP-2DOF-Camera-Platform_1601304211223.html) |
+| USB-C speaker | Belle's voice | [Amazon](https://www.amazon.es/dp/B0F1CZQ9NN) |
+| USB microphone | Voice capture | [Amazon](https://www.amazon.es/dp/B09KXB4FRR) |
 
 ## Software
 

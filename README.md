@@ -134,7 +134,7 @@ Belle_Assistant/
 
 ## Demo Videos
 
-Test recordings of Belle working (wake word, conversations, reminders, games, fall detection) are available in this [OneDrive folder](https://onedrive.live.com/?id=%2Fpersonal%2F1ff4055ac1f72fa6%2FDocuments%2FTFG%2FVideos&viewid=1a5fbf1c%2D5062%2D47b7%2D95c1%2D5cdfa9650b2e&view=0).
+Test recordings of Belle working (wake word, conversations, reminders, games, fall detection) are available in this [Drive folder](https://drive.google.com/drive/folders/1XeeakJ37fdq3HNhvrKVZCYe_chPS0NXn?usp=sharing).
 
 ## Contact
 

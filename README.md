@@ -134,7 +134,7 @@ Belle_Assistant/
 
 ## Demo Videos
 
-Test recordings of Belle working (wake word, conversations, reminders, games, fall detection) are available in this [Drive folder](https://drive.google.com/drive/folders/1XeeakJ37fdq3HNhvrKVZCYe_chPS0NXn?usp=sharing).
+Test recordings of Belle working (wake word, conversations, reminders, games, fall detection) are available in this [Drive folder](https://drive.google.com/drive/folders/1dvamtmIa3gjsFiGsZZaLuOB6GImw3p8G?usp=share_link).
 
 ## Contact
 
